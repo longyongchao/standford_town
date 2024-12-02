@@ -12,6 +12,7 @@ import time
 from utils import *
 
 openai.api_key = openai_api_key
+openai.api_base = openai_base_url
 
 def temp_sleep(seconds=0.1):
   time.sleep(seconds)
@@ -20,7 +21,7 @@ def ChatGPT_single_request(prompt):
   temp_sleep()
 
   completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo", 
+    model=replace_gpt35_custom_model, 
     messages=[{"role": "user", "content": prompt}]
   )
   return completion["choices"][0]["message"]["content"]
@@ -46,7 +47,7 @@ def GPT4_request(prompt):
 
   try: 
     completion = openai.ChatCompletion.create(
-    model="gpt-4", 
+    model=replace_gpt4_custom_model, 
     messages=[{"role": "user", "content": prompt}]
     )
     return completion["choices"][0]["message"]["content"]
@@ -71,7 +72,7 @@ def ChatGPT_request(prompt):
   # temp_sleep()
   try: 
     completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo", 
+    model=replace_gpt35_custom_model, 
     messages=[{"role": "user", "content": prompt}]
     )
     return completion["choices"][0]["message"]["content"]
@@ -208,6 +209,9 @@ def GPT_request(prompt, gpt_parameter):
   """
   temp_sleep()
   try: 
+    # print('&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+    # print('1:', gpt_parameter)
+    # print('2:', prompt)
     response = openai.Completion.create(
                 model=gpt_parameter["engine"],
                 prompt=prompt,
@@ -218,8 +222,11 @@ def GPT_request(prompt, gpt_parameter):
                 presence_penalty=gpt_parameter["presence_penalty"],
                 stream=gpt_parameter["stream"],
                 stop=gpt_parameter["stop"],)
+    # print('3:', response)
+    # print('&&&&&&&&&&&&&&&&&&&&&&&&&&&')
     return response.choices[0].text
-  except: 
+  except Exception as e:
+    print('4:', e)
     print ("TOKEN LIMIT EXCEEDED")
     return "TOKEN LIMIT EXCEEDED"
 
@@ -273,7 +280,7 @@ def safe_generate_response(prompt,
   return fail_safe_response
 
 
-def get_embedding(text, model="text-embedding-ada-002"):
+def get_embedding(text, model=replace_embedding_custom_model):
   text = text.replace("\n", " ")
   if not text: 
     text = "this is blank"
@@ -282,7 +289,7 @@ def get_embedding(text, model="text-embedding-ada-002"):
 
 
 if __name__ == '__main__':
-  gpt_parameter = {"engine": "text-davinci-003", "max_tokens": 50, 
+  gpt_parameter = {"engine": replace_text_davinci_003_model, "max_tokens": 50, 
                    "temperature": 0, "top_p": 1, "stream": False,
                    "frequency_penalty": 0, "presence_penalty": 0, 
                    "stop": ['"']}
