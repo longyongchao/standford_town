@@ -15,9 +15,33 @@ To set up your environment, you will need to generate a `utils.py` file that con
 In the `reverie/backend_server` folder (where `reverie.py` is located), create a new file titled `utils.py` and copy and paste the content below into the file:
 ```
 # Copy and paste your OpenAI API Key
-openai_api_key = "<Your OpenAI API>"
+
+"""for Ollama"""
+
+openai_api_key = "ollama"
+openai_base_url = "http://localhost:11434/v1/"
+
+ollama_model = 'qwen2.5:72b'
+
+replace_gpt35_custom_model = ollama_model
+replace_gpt4_custom_model = ollama_model
+replace_embedding_custom_model = "nomic-embed-text"
+replace_text_davinci_003_model = ollama_model
+replace_text_davinci_002_model = ollama_model
+
+"""for openai style"""
+
+# openai_api_key = ""
+# openai_base_url = ".../v1"
+
+# replace_gpt35_custom_model = "gpt-4o-mini"
+# replace_gpt4_custom_model = "chatgpt-4o-latest"
+# replace_embedding_custom_model = "text-embedding-ada-002"
+# replace_text_davinci_003_model = "gpt-3.5-turbo-instruct"
+# replace_text_davinci_002_model = "gpt-3.5-turbo-instruct"
+
 # Put your name
-key_owner = "<Name>"
+key_owner = "Wingchiu"
 
 maze_assets_loc = "../../environment/frontend_server/static_dirs/assets"
 env_matrix = f"{maze_assets_loc}/the_ville/matrix"
