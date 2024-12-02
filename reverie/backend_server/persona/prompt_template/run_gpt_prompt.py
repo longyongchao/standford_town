@@ -373,12 +373,40 @@ def run_gpt_prompt_task_decomp(persona,
       else: 
         _cr += [i]
     for count, i in enumerate(_cr): 
+      """修复方案1，source: https://github.com/joonspk-research/generative_agents/issues/111"""
+      # if "duration in minutes" in i: 
+      #   k = [j.strip() for j in i.split("(duration in minutes:")]
+      # elif "duration" in i:
+      #   k = [j.strip() for j in i.split("(duration:")]
+      # else:
+      #   task = i
+      #   duration = 0 #arbitrary value, don't know if 0 minutes will hurt anything
+      # if "duration" in i:
+      #   task = k[0]
+      #   if task[-1] == ".": 
+      #     task = task[:-1]
+      #   duration = int(k[1].split(",")[0].strip())
+      # cr += [[task, duration]]
+
+      """修复方案2, source: https://github.com/joonspk-research/generative_agents/issues/111"""
+      # if "duration in minutes" in i: 
+      #   k = [j.strip() for j in i.split("(duration in minutes:")]
+      # else:
+      #   k = [j.strip() for j in i.split("(duration:")]
+      # task = k[0]
+      # if task[-1] == ".": 
+      #   task = task[:-1]
+      # duration = int(k[1].split(",")[0].strip())
+      # cr += [[task, duration]]
+
+      """原方案"""
       k = [j.strip() for j in i.split("(duration in minutes:")]
       task = k[0]
       if task[-1] == ".": 
         task = task[:-1]
       duration = int(k[1].split(",")[0].strip())
       cr += [[task, duration]]
+
 
     total_expected_min = int(prompt.split("(total duration in minutes")[-1]
                                    .split("):")[0].strip())
